@@ -190,5 +190,30 @@
   4. 发生某种情况时执行代码（如， 点击了一个按钮， 数据到达， 等等；
   5. 只在必要时才运行代码。
 
+#### Comparator
 
+-  Comparator 接口包含很多方便的静态方法来创建比较器。 这些方法可以用于 lambda 表
+  达式或方法引用
+
+  ```java
+  //Person 对象数组，按名字对这些对象排序
+  Arrays.sort(people, Comparator.comparing(Person::getName));
+  //可以把比较器与 thenComparing 方法串起来
+  Arrays.sort(people ,Comparator.comparing(Person::getlastName).
+              thenConiparing(Pe rson::getFi rstName));
+  //根据人名长度完成排序
+  Arrays.sort(people, Comparator.companng(Person::getName,(s, t) -> Integer.compare(s.length(), t.length())))；
+  //comparing 和 thenComparing 方法都有变体形式，可以避免 int、 long 或 double 值
+  //的装箱。要完成前一个操作， 还有一种更容易的做法：
+  Arrays.sort(people, Comparator.comparinglnt(p -> p.getName().length()));
+  ```
+
+
+
+#### 内部类
+
+- 内部类方法可以访问该类定义所在的作用域中的数据， 包括私有的数据。
+- 内部类可以对同一个包中的其他类隐藏起来。
+- 当想要定义一个回调函数且不想编写大量代码时，使用匿名 （anonymous) 内部类比较
+  便捷。
 
