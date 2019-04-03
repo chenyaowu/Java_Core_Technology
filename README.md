@@ -217,3 +217,161 @@
 - 当想要定义一个回调函数且不想编写大量代码时，使用匿名 （anonymous) 内部类比较
   便捷。
 
+#### 定义简单泛型类
+
+- Pair<T,U>
+
+#### 泛 型 方 法
+
+- public static  <T>  T getMiddle(T... a)
+
+#### 类型变量的限定
+
+- public static  <T extends Comparable> T min (T[ ] a) . . .
+
+#### 类 型 擦 除
+
+- 无论何时定义一个泛型类型， 都自动提供了一个相应的原始类型 （ raw type )。原始类型
+  的名字就是删去类型参数后的泛型类型名。擦除（ erased) 类型变M, 并替换为限定类型（无
+  限定的变量用 Object。)
+
+  ```java
+  // Pair<T>> 的原始类型
+  public class Pair
+  {
+  private Object first;
+  private Object second;
+  public Pair(Object first, Object second)
+  {
+  this,first = first;
+  this.second = second;
+  public Object getFirstO { return first; }
+  public Object getSecondO { return second; }
+  public void setFirst(Object newValue) { first = newValue; }
+  public void setSecond(Object newValue) { second = newValue; }
+  }
+  ```
+
+  
+
+- 原始类型用第一个限定的类型变量来替换， 如果没有给定限定就用 Object 替换
+
+  ```java
+  public class Interval <T extends Comparable & Serializable〉implements Serializable
+  {
+  private T lower;
+  private T upper;
+  public Interval (T first, T second)
+  {
+  if (first.compareTo(second) <= 0) { lower = first; upper = second; }
+  else { lower = second; upper = first; }
+  }
+  }
+  // 原始类型
+  public class Interval implements Serializable
+  {
+  private Comparable lower;
+  private Coiparable upper;
+  public Interval (Coiparable first, Coiparable second) { . . . }
+  }
+  
+  ```
+
+  
+
+#### 翻译泛型表达式
+
+- 当程序调用泛型方法时，如果擦除返回类型， 编译器插入强制类型转换。例如，下面这
+  个语句序列
+
+  ```java
+  Pair<Employee> buddies = . .
+  Employee buddy = buddies.getFirst()；
+  ```
+
+- 擦除 getFirst 的返回类型后将返回 Object 类型。编译器自动插人 Employee 的强制类型转换。
+  也就是说，编译器把这个方法调用翻译为两条虚拟机指令：
+  1. 对原始方法 Pair.getFirst 的调用。
+  2. 将返回的 Object 类型强制转换为 Employee 类型。
+- 当存取一个泛型域时也要插人强制类型转换。
+
+#### 翻译泛型方法
+
+```java
+public static <T extends Comparable〉T nrin(T[] a)
+//是一个完整的方法族，而擦除类型之后
+public static Comparable min(Comparable!] a)
+```
+
+- Java 泛型转换的事实：
+  1. 虚拟机中没有泛型，只有普通的类和方法。
+  2. 所有的类型参数都用它们的限定类型替换。
+  3. 桥方法被合成来保持多态。
+  4. 为保持类型安全性，必要时插人强制类型转换。
+
+#### 约束与局限性
+
+- 不能用基本类型实例化类型参数
+
+- 运行时类型查询只适用于原始类型
+
+  ```java
+  if (a instanceof Pair<String>) // Error
+  if (a instanceof Pair<T>) // Error
+  Pair<St「ing> p = (Pair<String>) a; // Warning-can only test that a is a Pair
+  ```
+
+- 不能创建参数化类型的数组
+
+  ```java
+  Pair<String>[] table = new Pair<String>[10]; // Error
+  ```
+
+- 不能实例化类型变置
+
+  ```java
+  public Pair() { first = new T(); second = new T(); } // Error
+  ```
+
+- 不能构造泛型数组
+
+  ```java
+  public static <T extends Comparable〉T[] minmax(T[] a) { T[] mm = new T[2]; . . . } // Error
+  ```
+
+- 泛型类的静态上下文中类型变量无效
+
+  ```java
+  public class Singleton<T>
+  {
+  private static T singlelnstance; // Error
+  public static T getSinglelnstanceO // Error
+  {
+  if (singleinstance == null) construct new instance of T
+  return singlelnstance;
+  }
+  }
+  ```
+
+- 不能抛出或捕获泛型类的实例
+
+  ```java
+  public class Problem<T> extends Exception { /* . . . */ } // Error can't extend Throwable
+  public static <T extends Throwable〉void doWork(Class<T> t){
+  	try{
+  	do work
+  	}
+  	catch (T e) // Error can 't catch type variable
+  	{
+  	Logger,global.info(...)
+  	}
+  }	
+  ```
+
+  
+
+- 可以消除对受查异常的检查
+
+  - @SuppressWamings 注解
+
+- 注意擦除后的冲突
