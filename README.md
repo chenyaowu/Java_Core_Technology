@@ -1,6 +1,14 @@
 # Java核心技术（卷一）
 
-## Java 的基本程序设计结构
+## Java 的基本程序设计概述
+
+- 略
+
+## Java程序设计环境
+
+- 略
+
+## Java的基本程序设计结构
 
 ### 数 据 类 型
 
@@ -25,13 +33,22 @@
   | \\'      | 单引号 | \u0027     |
   | \\\      | 反斜杠 | \u005c     |
 
-  
+## 对象和类
+
+- final实例域
+  - 可以将实例域定义为 final。 构建对象时必须初始化这样的域。也就是说， 必须确保在每
+    一个构造器执行之后，这个域的值被设置， 并且在后面的操作中， 不能够再对它进行修改。
+  - final 修饰符大都应用于基本 （primitive ) 类型域，或不可变（immutable) 类的域（如果类
+    中的每个方法都不会改变其对象， 这种类就是不可变的类。
+  - 对于可变的类， 使用 final 修饰符可能会对读者造成混乱。
+
+## 继承
 
 - final 类和方法不可继承
 
-### lambda 表达式
+## 接口、lambda 表达式与内部类
 
-#### lambda 表达式的语法
+### lambda 表达式的语法
 
 - lambda 表达式是一个可传递的代码块， 可以在以后执行一次或多次。
 
@@ -44,35 +61,35 @@
   }
   ```
 
-  - 即使 lambda 表达式没有参数， 仍然要提供空括号，就像无参数方法一样：
+- 即使 lambda 表达式没有参数， 仍然要提供空括号，就像无参数方法一样：
 
-    ```java
-    () -> { for (int i = 100;i >= 0;i ) System.out.println(i); }
-    ```
+  ```java
+  () -> { for (int i = 100;i >= 0;i ) System.out.println(i); }
+  ```
 
-  - 如果可以推导出一个 lambda 表达式的参数类型，则可以忽略其类型
+- 如果可以推导出一个 lambda 表达式的参数类型，则可以忽略其类型
 
-    ```java
-    Comparator<String> comp
-    = (first, second) // Same as (String first, String second)
-    -> first.lengthO - second.lengthO;
-    ```
+  ```java
+  Comparator<String> comp
+  = (first, second) // Same as (String first, String second)
+  -> first.lengthO - second.lengthO;
+  ```
 
-  - 如果方法只有一 参数， 而且这个参数的类型可以推导得出，那么甚至还可以省略小括号：
+- 如果方法只有一 参数， 而且这个参数的类型可以推导得出，那么甚至还可以省略小括号：
 
-    ```java
-    ActionListener listener = event ->
-    System.out.println("The time is " + new Date()");
-    // Instead of (event) -> . . . or (ActionEvent event) -> . . .
-    ```
+  ```java
+  ActionListener listener = event ->
+  System.out.println("The time is " + new Date()");
+  // Instead of (event) -> . . . or (ActionEvent event) -> . . .
+  ```
 
-  - 无需指定 lambda 表达式的返回类型。
+- 无需指定 lambda 表达式的返回类型。
 
-    ```java
-    (String first, String second) -> first.lengthO - second.length
-    ```
+  ```java
+  (String first, String second) -> first.lengthO - second.length
+  ```
 
-#### 函 数 式 接 口
+### 函 数 式 接 口
 
 - Java 中 已 经 有 很 多 封 装 代 码 块 的 接 口。
 - 对于只有一个抽象方法的接口， 需要这种接口的对象时， 就可以提供一个 lambda 表达
@@ -208,28 +225,32 @@
   Arrays.sort(people, Comparator.comparinglnt(p -> p.getName().length()));
   ```
 
-
-
-#### 内部类
+### 内部类
 
 - 内部类方法可以访问该类定义所在的作用域中的数据， 包括私有的数据。
 - 内部类可以对同一个包中的其他类隐藏起来。
 - 当想要定义一个回调函数且不想编写大量代码时，使用匿名 （anonymous) 内部类比较
   便捷。
 
-#### 定义简单泛型类
+## 异常、断言和日志
+
+- 略
+
+## 泛型程序设计
+
+### 定义简单泛型类
 
 - Pair<T,U>
 
-#### 泛 型 方 法
+### 泛 型 方 法
 
 - public static  <T>  T getMiddle(T... a)
 
-#### 类型变量的限定
+### 类型变量的限定
 
 - public static  <T extends Comparable> T min (T[ ] a) . . .
 
-#### 类 型 擦 除
+### 类 型 擦 除
 
 - 无论何时定义一个泛型类型， 都自动提供了一个相应的原始类型 （ raw type )。原始类型
   的名字就是删去类型参数后的泛型类型名。擦除（ erased) 类型变M, 并替换为限定类型（无
@@ -375,3 +396,8 @@ public static Comparable min(Comparable!] a)
   - @SuppressWamings 注解
 
 - 注意擦除后的冲突
+
+
+
+
+
